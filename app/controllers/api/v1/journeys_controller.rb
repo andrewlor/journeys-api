@@ -1,4 +1,6 @@
 class Api::V1::JourneysController < Api::V1::BaseController
+  before_action :set_journey, only: [:show, :update]
+  before_action :edit_journey_authorize_user, only: :update
 
   # GET api/v1/journeys
   def index
@@ -7,12 +9,7 @@ class Api::V1::JourneysController < Api::V1::BaseController
 
   # GET api/v1/journeys/:id
   def show
-    begin
-      result = Journey.find(params[:id])
-      render json: result, status: :ok
-    rescue ActiveRecord::RecordNotFound
-      render json: { errors: [ "Journey not found." ] }, status: 404
-    end
+    render json: @journey, status: :ok
   end
 
   # POST api/v1/journeys
@@ -23,20 +20,25 @@ class Api::V1::JourneysController < Api::V1::BaseController
 
   # PUT api/v1/journeys/:id
   def update
-    begin
-      j = Journey.find(params[:id])
-      if j.user_id == current_api_v1_user.id
-        j.update_attributes(journey_update_params)
-        render json: j, status: :ok
-      else
-        render json: { errors: [ "You are not authorized to update this journey." ] }, status: 403
-      end
-    rescue ActiveRecord::RecordNotFound
-      render json: { errors: [ "Journey not found." ] }, status: 404
-    end
+    @journey.update_attributes(journey_update_params)
+    render json: @journey, status: :ok
   end
 
   private
+
+  def set_journey
+    begin
+      @journey = Journey.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return render json: { errors: [ "Journey not found." ] }, status: 404
+    end
+  end
+
+  def edit_journey_authorize_user
+    if @journey.user_id != current_api_v1_user.id
+      return render json: { errors: [ "You are not authorized to update this journey." ] }, status: 403
+    end
+  end
 
   def journey_params
     params.require(
