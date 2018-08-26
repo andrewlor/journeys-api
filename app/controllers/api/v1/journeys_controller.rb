@@ -7,9 +7,14 @@ class Api::V1::JourneysController < Api::V1::BaseController
     render json: Journey.all, status: :ok
   end
 
+  # GET api/v1/my_journeys
+  def my_journeys
+    render json: current_api_v1_user.journeys, status: :ok
+  end
+
   # GET api/v1/journeys/:id
   def show
-    render json: @journey, status: :ok
+    render json: @journey, status: :ok, serializer: DetailedJourneySerializer
   end
 
   # POST api/v1/journeys
