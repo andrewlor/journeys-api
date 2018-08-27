@@ -4,17 +4,17 @@ class Api::V1::JourneysController < Api::V1::BaseController
 
   # GET api/v1/journeys
   def index
-    render json: Journey.all, status: :ok
+    render json: Journey.all.order(created_at: :desc), status: :ok
   end
 
   # GET api/v1/my_journeys
   def my_journeys
-    render json: current_api_v1_user.journeys, status: :ok
+    render json: current_api_v1_user.journeys.order(created_at: :desc), status: :ok
   end
 
   # GET api/v1/journeys/:id
   def show
-    render json: @journey, status: :ok, serializer: DetailedJourneySerializer
+    render json: @journey, status: :ok, serializer: Api::V1::DetailedJourneySerializer
   end
 
   # POST api/v1/journeys
