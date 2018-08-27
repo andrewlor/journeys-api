@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_28_161825) do
+ActiveRecord::Schema.define(version: 2018_08_27_161255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "commit_periods", force: :cascade do |t|
+    t.integer "journey_id"
+    t.datetime "startdate"
+    t.datetime "enddate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "commits", force: :cascade do |t|
+    t.integer "commit_period_id"
+    t.string "description"
+    t.integer "repetitions", default: 1
+    t.integer "repetitions_completed", default: 0
+  end
 
   create_table "data_points", force: :cascade do |t|
     t.integer "data"

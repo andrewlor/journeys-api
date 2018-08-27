@@ -14,7 +14,7 @@ class Api::V1::JourneysController < Api::V1::BaseController
 
   # GET api/v1/journeys/:id
   def show
-    render json: @journey, status: :ok, serializer: Api::V1::DetailedJourneySerializer
+    render json: @journey, status: :ok, serializer: Api::V1::DetailedJourneySerializer, include: "journey_logs,commit_periods,commit_periods.commits"
   end
 
   # POST api/v1/journeys
@@ -33,7 +33,7 @@ class Api::V1::JourneysController < Api::V1::BaseController
 
   def set_journey
     begin
-      @journey = Journey.find(params[:id])
+      @journey = Journey.find(params[:journey_id])
     rescue ActiveRecord::RecordNotFound
       return render json: { errors: [ "Journey not found." ] }, status: 404
     end
