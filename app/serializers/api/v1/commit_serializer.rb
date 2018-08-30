@@ -1,3 +1,3 @@
-class Api::V1::CommitSerializer < ActiveModel::Serializer
-  attributes :description, :repetitions, :repetitions_completed
+class Api::V1::CommitSerializer < Api::V1::BaseSerializer
+  attributes :id, :description, :repetitions, :repetitions_completed
 end
