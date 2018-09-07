@@ -1,3 +1,3 @@
 Devise.setup do |config|
-  config.secret_key = Rails.application.credentials.secret_key_base
+  config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 end
