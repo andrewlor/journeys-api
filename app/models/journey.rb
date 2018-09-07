@@ -5,10 +5,20 @@ class Journey < ApplicationRecord
   has_many :commit_periods
 
   before_save :append_prefix
+  after_save :create_commit_periods
 
   private
 
   def append_prefix
     self.title = "My Journey to #{self.title}"
+  end
+
+  def create_commit_periods
+    this_week = self.commit_periods.new
+    next_week = self.commit_periods.new
+    this_week.set_period_this_week
+    next_week.set_period_next_week
+    this_week.save
+    next_week.save
   end
 end

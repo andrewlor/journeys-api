@@ -1,15 +1,18 @@
 class CommitPeriod < ApplicationRecord
   belongs_to :journey
   has_many :commits
+  
+  def set_period_this_week
+    self.startdate = Date.today
+    self.enddate = date_of_next('Sunday')
+  end
 
-  after_initialize :set_period
+  def set_period_next_week
+    self.startdate = date_of_next('Monday')
+    self.enddate = self.startdate + 6.days
+  end
 
   private
-  
-  def set_period
-    self.startdate = Date.today
-    self.enddate = date_of_next 'Sunday'
-  end
 
   def date_of_next(day)
     date  = Date.parse(day)
