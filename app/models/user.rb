@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   has_many :journeys
 
+  validates :nickname, uniqueness: true, presence: true
+
   def token_validation_response
     Api::V1::UserSerializer.new(self).as_json
   end
