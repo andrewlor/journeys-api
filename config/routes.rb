@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Devise
       mount_devise_token_auth_for 'User', at: 'users', controllers: { registrations: 'user/registrations'}
+      post '/profile_picture', to: 'images#upload_profile_picture'
 
       # Journeys
       resources :journeys, param: :journey_id
