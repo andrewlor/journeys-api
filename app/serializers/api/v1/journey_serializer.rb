@@ -1,7 +1,11 @@
 class Api::V1::JourneySerializer < Api::V1::BaseSerializer
-  attributes :id, :title, :created_at, :username
+  attributes :id, :title, :created_at, :username, :user_email
 
   def username
     object.user.nickname
+  end
+
+  def user_email
+    object.user.email
   end
 end
