@@ -4,6 +4,7 @@ class Api::V1::JourneyLogsController < Api::V1::JourneysController
   # POST api/v1/journeys/:id/journey_logs
   def create
     journey_log = @journey.journey_logs.create(journey_log_params)
+    
     if data_point_params.present?
       begin
         data_point = DataPoint.new(data_point_params)
@@ -21,6 +22,17 @@ class Api::V1::JourneyLogsController < Api::V1::JourneysController
         return render json: { errors: data_point.errors.full_messages }, status: 400
       end
     end
+
+    if params[:image].present?
+      filename = "#{journey_log.id}-#{Time.now.strftime('%s')}"
+      File.open(filename, 'wb') do |f|
+        f.write(Base64.decode64(params[:image]))
+        journey_log.image = f
+      end
+      journey_log.save
+      File.delete(filename)
+    end
+    
     render json: journey_log, status: :ok
   end
 
