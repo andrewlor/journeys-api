@@ -1,5 +1,5 @@
 class Api::V1::JourneysController < Api::V1::BaseController
-  before_action :set_journey, only: [:show, :update]
+  before_action :set_journey, only: [:show, :update, :destroy]
   before_action :edit_journey_authorize_user, only: :update
 
   # GET api/v1/journeys
@@ -29,6 +29,12 @@ class Api::V1::JourneysController < Api::V1::BaseController
     render json: @journey, status: :ok
   end
 
+  # DELETE api/v1/journeys/:id
+  def destroy
+    @journey.destroy
+    render json: {}, status: :ok
+  end
+
   private
 
   def set_journey
@@ -56,6 +62,6 @@ class Api::V1::JourneysController < Api::V1::BaseController
   end
 
   def journey_update_params
-    params.permit(:title, :mission_statement)
+    params.permit(:mission_statement)
   end
 end

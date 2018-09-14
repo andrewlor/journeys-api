@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       scope 'journeys/:journey_id/' do
 
         # Logs
-        resources :journey_logs, only: :create
+        resources :journey_logs, only: [:create, :destroy]
 
         # Commits
         put 'commits/:commit_id', to: 'commits#edit'

@@ -36,6 +36,12 @@ class Api::V1::JourneyLogsController < Api::V1::JourneysController
     render json: journey_log, status: :ok
   end
 
+  # DELETE api/v1/journeys/:journey_id/journey_logs/:id
+  def destroy
+    JourneyLog.find(params[:id]).destroy
+    render json: {}, status: :ok
+  end
+
   private
 
   def journey_log_params
