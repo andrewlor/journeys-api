@@ -4,8 +4,8 @@ class Journey < ApplicationRecord
   has_many :data_points
   has_many :commit_periods
 
-  before_save :append_prefix
-  after_save :create_commit_periods
+  before_create :append_prefix
+  after_create :create_commit_periods
 
   private
 
