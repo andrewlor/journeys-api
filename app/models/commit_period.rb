@@ -4,17 +4,15 @@ class CommitPeriod < ApplicationRecord
   
   def set_period_this_week
     self.startdate = Date.today
-    self.enddate = date_of_next('Sunday')
+    date = Date.parse('Sunday')
+    delta = date >= Date.today ? 0 : 7
+    self.enddate = date + delta
   end
 
   def set_period_next_week
-    self.startdate = date_of_next('Monday')
+    date = Date.parse('Monday')
+    delta = date > Date.today ? 0 : 7
+    self.startdate = date + delta
     self.enddate = self.startdate + 6.days
-  end
-
-  def date_of_next(day)
-    date  = Date.parse(day)
-    delta = date >= Date.today ? 0 : 7
-    date + delta
   end
 end
