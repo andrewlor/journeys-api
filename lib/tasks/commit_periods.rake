@@ -1,4 +1,5 @@
 task :generate_commit_periods_next_week => [:environment] do
+  next unless Date.today.wday == 5
   journeys = Journey.all
   p journeys.count
   journeys.each do |journey|
